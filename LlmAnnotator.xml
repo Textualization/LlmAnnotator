@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+	<!--
+	 ***************************************************************
+	 * Licensed to the Apache Software Foundation (ASF) under one
+	 * or more contributor license agreements.  See the NOTICE file
+	 * distributed with this work for additional information
+	 * regarding copyright ownership.  The ASF licenses this file
+	 * to you under the Apache License, Version 2.0 (the
+	 * "License"); you may not use this file except in compliance
+	 * with the License.  You may obtain a copy of the License at
+         *
+	 *   http://www.apache.org/licenses/LICENSE-2.0
+	 * 
+	 * Unless required by applicable law or agreed to in writing,
+	 * software distributed under the License is distributed on an
+	 * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	 * KIND, either express or implied.  See the License for the
+	 * specific language governing permissions and limitations
+	 * under the License.
+	 ***************************************************************
+   -->
+
+<taeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.cpp</frameworkImplementation>
+  <primitive>true</primitive>
+<annotatorImplementationName>LlmAnnotator</annotatorImplementationName>
+
+
+<analysisEngineMetaData>
+  <name>LlmAnnotator</name>
+  <description>Runs a local LLM and stores its output in the LlmOutput SoFA.</description>
+  <version>0.1</version>
+  <vendor>Textualization Software Ltd.</vendor>
+
+
+<!--
+  Configuration Parameter Definitions
+-->
+<configurationParameters>
+            <configurationParameter>
+                <name>Prompt</name>
+                <description>Prompt to send to the LLM, it should include a string ("variable") that will be replaced with the SoFA text.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>Variable</name>
+                <description>Substring of the Prompt that will be replaced with the SoFA text. This string must be present in Prompt.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+            <configurationParameter>
+                <name>Model</name>
+                <description>Local LLM model, in GGUF format.</description>
+                <type>String</type>
+                <multiValued>false</multiValued>
+                <mandatory>true</mandatory>
+            </configurationParameter>
+</configurationParameters>
+  
+
+<!--
+        Values for the configuration parameters
+-->
+<configurationParameterSettings>
+          <nameValuePair>
+            <name>Prompt</name>
+            <value>
+              <string>&lt;start_of_turn>Summarize the following text:
+
+{sofa}
+&lt;end_of_turn>&lt;start_of_turn>
+
+Summary:
+</string>
+            </value>
+          </nameValuePair>
+          <nameValuePair>
+            <name>Variable</name>
+            <value>
+              <string>{sofa}</string>
+            </value>
+          </nameValuePair>
+          <nameValuePair>
+            <name>Model</name>
+            <value>
+              <string>gemma-2-2b-it.q2_k.gguf</string>
+            </value>
+          </nameValuePair>  
+</configurationParameterSettings>
+ 
+
+<!--
+        TypeSystem Definition
+-->
+
+  <typeSystemDescription/>
+
+<!--
+        IndexSystem Definition
+-->
+
+        
+
+<!--
+Capabilities: Inputs, Outputs, and Preconditions
+-->
+  <capabilities>
+    <capability>
+      <inputs/>
+      <outputs/>
+      <inputSofas/>
+      <outputSofas>
+  	<sofaName>LlmOutput</sofaName>
+      </outputSofas>
+      <languagesSupported>
+        <language>x-unspecified</language>
+      </languagesSupported>
+    </capability>
+  </capabilities>
+
+</analysisEngineMetaData>
+</taeDescription>
